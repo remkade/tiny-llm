@@ -1,0 +1,25 @@
+---
+services:
+  chat-ui:
+    image: ghcr.io/huggingface/chat-ui
+    ports: ['3000:3000']
+    volumes:
+      - ./huggingface-chat.env.local:/app/.env.local
+    links: [ferretdb, llama]
+
+  ferretdb:
+    image: ghcr.io/ferretdb/all-in-one
+    environment:
+      FERRETDB_HANDLER: sqlite
+    volumes:
+      - ferretdb:/state/
+  llama:
+    image: ghcr.io/ggerganov/llama.cpp:server
+    ports: ['8081:8080']
+    command: -m ${MODEL} -c 0 -np 16 --host 0.0.0.0
+    working_dir: /app
+    volumes:
+      - ./models/:/app/models
+volumes:
+  ferretdb:
+  env_local:

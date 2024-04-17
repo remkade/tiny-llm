@@ -1,0 +1,5 @@
+{
+  "tasks": {
+    "env": "deno run --allow-read --allow-write --allow-env ./generate-hugging-face-env.local.ts"
+  }
+}
